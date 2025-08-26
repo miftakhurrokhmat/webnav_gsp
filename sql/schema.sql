@@ -1,0 +1,21 @@
+-- MySQL schema for CI3 GSP demo
+CREATE TABLE IF NOT EXISTS sessions (
+  id VARCHAR(64) PRIMARY KEY,
+  started_at DATETIME NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS page_views (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  session_id VARCHAR(64) NOT NULL,
+  page VARCHAR(255) NOT NULL,
+  viewed_at DATETIME NOT NULL,
+  INDEX idx_sess_time (session_id, viewed_at),
+  CONSTRAINT fk_pv_session FOREIGN KEY (session_id) REFERENCES sessions(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS patterns (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  pattern TEXT NOT NULL, -- e.g. Home>Akademik>Beasiswa
+  support INT NOT NULL,
+  created_at DATETIME NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
